@@ -3,6 +3,18 @@
 # Cz1 - odbior danych UART na RPi4B
 
 
+# Odbior i przetwarzanie kodu (bajtow) odebranych przez UART/siec z magistrali
+# RS485
+
+
+# 1. Odbior danych przez UART
+# 2. Weryfikacja poprawnosci znakow ramki danych
+# 3. Przetwarzanie danych pobranych z ramki
+# 4. Cykliczna obsluga urzadzenia do wizualizacji
+
+
+# Urzadzenia typu master na magistrali RS485
+# |Adres|    Nazwa    | sl/zn |  us  |
 # | 01h | termometr A |  1/12 | 1041 |
 # | 02h | termometr B |  1/12 | 1041 |
 # | 12h | termometr C |  1/12 | 1041 |
@@ -32,14 +44,53 @@ from time import sleep
 
 # Inicjalizacja połączenia z serwerem portów
 SerialData = serial.Serial(
-    port = "/dev/ttyNVT0",
-    baudrate = 115200#,
+    port = 'COM3'#,
+#    baudrate = 115200#,
     #bytesize = serial.EIGHTBITS,
     #parity = serial.PARITY_NONE,
     #stopbits = serial.STOPBITS_ONE
     )
 
+
+# Konwersja bajtu HEX na DEC
+def HEX2DEC():
+    
+    return;
+
+
+### PETLA GLOWNA
 while True:
-    SR = SerialData.read()
+    bytesToRead =SerialData.inWaiting()
+    SR = SerialData.read(bytesToRead)
+    #print(bytesToRead)
+    if bytesToRead > 0:
+        print(SR)
     # SR = SerialData=read_until(expected=LF, size=NONE)
     # https://pyserial.readthedocs.io/en/latest/shortintro.html?highlight=readline#readline
+    """
+    match _char:
+        case '/n':
+            # return/break/exit()?
+        case '/r':
+            
+        case _:
+      """      
+    
+"""
+
+if A == 10:
+    Lenf = 1
+elif A == 13:
+    if Lenf == 1:
+        Lenf = 2
+    else:
+        Lenf = 0
+else:
+    A -= 48
+    if A > 16:
+        A -= 7
+    if A < 16:
+        Lenf += 1
+        if (Lenf << 1) == 0: # ???
+            ...
+"""
